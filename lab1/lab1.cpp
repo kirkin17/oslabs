@@ -55,8 +55,8 @@ int main()
     arg1.flag = 1;
     arg2.flag = 1;
 
-    pthread_cancel(id1);
-    pthread_cancel(id2);
+    // pthread_cancel(id1);
+    // pthread_cancel(id2);
     
     int *exitcode1;
     int *exitcode2;
