@@ -15,7 +15,7 @@ void* proc1(void *arg)
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        pthread_mutex_lock(args->mutex);
+        while(pthread_mutex_trylock(args->mutex) != 0) sleep(1);
         for(int i = 0; i < 10; i++)
         {
             putchar(args->sym);
@@ -35,7 +35,7 @@ void* proc2(void *arg)
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        pthread_mutex_lock(args->mutex);
+        while(pthread_mutex_trylock(args->mutex) != 0) sleep(1);
         for(int i = 0; i < 10; i++)
         {
             putchar(args->sym);
