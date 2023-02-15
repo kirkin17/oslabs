@@ -12,7 +12,7 @@ struct targs
 
 void* proc1(void *arg)
 {
-    printf("Поток 1 начал работу\n");
+    printf("\nПоток 1 начал работу\n");
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
