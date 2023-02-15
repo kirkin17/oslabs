@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <string.h>
 
 struct targs
 {
@@ -15,7 +16,11 @@ void* proc1(void *arg)
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        while(pthread_mutex_trylock(args->mutex) != 0) sleep(1);
+        while(int error = pthread_mutex_trylock(args->mutex) != 0)
+        {
+            printf("\nОшибка потока 1: %s\n", strerror(error));
+            sleep(1);
+        }
         for(int i = 0; i < 10; i++)
         {
             putchar(args->sym);
@@ -31,11 +36,15 @@ void* proc1(void *arg)
 
 void* proc2(void *arg)
 {
-    printf("Поток 2 начал работу\n");
+    printf("\nПоток 2 начал работу\n");
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        while(pthread_mutex_trylock(args->mutex) != 0) sleep(1);
+        while(int error = pthread_mutex_trylock(args->mutex) != 0)
+        {
+            printf("\nОшибка потока 2: %s\n", strerror(error));
+            sleep(1);
+        }
         for(int i = 0; i < 10; i++)
         {
             putchar(args->sym);
@@ -67,9 +76,9 @@ int main()
     pthread_t id1, id2;
     pthread_create(&id1, NULL, proc1, &arg1);
     pthread_create(&id2, NULL, proc2, &arg2);
-    printf("Программа ждет нажатия клавиши\n");
+    printf("\nПрограмма ждет нажатия клавиши\n");
     getchar();
-    printf("Клавиша нажата\n");
+    printf("\nКлавиша нажата\n");
     arg1.flag = 1;
     arg2.flag = 1;
     
@@ -78,8 +87,8 @@ int main()
 
     pthread_join(id1, (void**)&exitcode1);
     pthread_join(id2, (void**)&exitcode2);
-    printf("Поток 1 был завершен с кодом: %p\n", exitcode1);
-    printf("Поток 2 был завершен с кодом: %p\n", exitcode2);
-    printf("Программа закончила работу\n");
+    printf("\nПоток 1 был завершен с кодом: %p\n", exitcode1);
+    printf("\nПоток 2 был завершен с кодом: %p\n", exitcode2);
+    printf("\nПрограмма закончила работу\n");
     pthread_mutex_destroy(&mutex);
 }
