@@ -16,10 +16,15 @@ void* proc1(void *arg)
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        while(int error = pthread_mutex_trylock(args->mutex) != 0)
+        while(1)
         {
-            printf("\nОшибка потока 1: %s\n", strerror(error));
-            sleep(1);
+            int error = pthread_mutex_trylock(args->mutex);
+            if(error == 0) break;
+            else
+            {
+                printf("\nОшибка потока 1: %s\n", strerror(error));
+                sleep(1);
+            }
         }
         for(int i = 0; i < 10; i++)
         {
@@ -40,10 +45,15 @@ void* proc2(void *arg)
     targs *args = (targs*)arg;
     while(args->flag == 0)
     {
-        while(int error = pthread_mutex_trylock(args->mutex) != 0)
+        while(1)
         {
-            printf("\nОшибка потока 2: %s\n", strerror(error));
-            sleep(1);
+            int error = pthread_mutex_trylock(args->mutex);
+            if(error == 0) break;
+            else
+            {
+                printf("\nОшибка потока 2: %s\n", strerror(error));
+                sleep(1);
+            }
         }
         for(int i = 0; i < 10; i++)
         {
