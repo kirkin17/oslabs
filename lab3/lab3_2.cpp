@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     pid_t pid_child = fork();
     if (pid_child == 0)
     {
-        if(execvp("./lab3_1", argv) == -1) perror("execvp");
+        if(execvp("lab3_1", argv) == -1) perror("execvp");
     }
     else if (pid_child > 0) 
     {
