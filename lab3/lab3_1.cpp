@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-
 int main(int argc, char *argv[])
 {
     printf("Программа 1 начала работу\n");
